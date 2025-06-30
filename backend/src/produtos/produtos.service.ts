@@ -20,7 +20,7 @@ export class ProdutosService {
     filtroDto: ObterProdutosFiltroDto,
   ): Promise<Produto[]> {
     const { brand, type, pagina = 1, limite = 10 } = filtroDto;
-    const query: any = {};
+    const query: any = { active: true };
 
     if (brand) {
       query.brand = { $regex: brand, $options: 'i' };
@@ -34,9 +34,14 @@ export class ProdutosService {
   }
 
   async buscarPorId(id: string): Promise<Produto> {
-    const produto = await this.produtoModelo.findById(id).exec();
+    const produto = await this.produtoModelo
+      .findOne({ _id: id, active: true })
+      .exec();
+
     if (!produto) {
-      throw new NotFoundException(`Produto com ID "${id}" não encontrado.`);
+      throw new NotFoundException(
+        `Produto com ID "${id}" não encontrado ou inativo.`,
+      );
     }
     return produto;
   }
@@ -48,6 +53,7 @@ export class ProdutosService {
     const produtoExistente = await this.produtoModelo
       .findByIdAndUpdate(id, atualizarProdutoDto, { new: true })
       .exec();
+
     if (!produtoExistente) {
       throw new NotFoundException(`Produto com ID "${id}" não encontrado.`);
     }
@@ -55,10 +61,14 @@ export class ProdutosService {
   }
 
   async remover(id: string): Promise<any> {
-    const produtoDeletado = await this.produtoModelo.findByIdAndDelete(id).exec();
-    if (!produtoDeletado) {
+    const produtoInativado = await this.produtoModelo
+      .findByIdAndUpdate(id, { active: false }, { new: true })
+      .exec();
+
+    if (!produtoInativado) {
       throw new NotFoundException(`Produto com ID "${id}" não encontrado.`);
     }
-    return { message: `Produto com ID "${id}" deletado com sucesso.` };
+
+    return { message: `Produto com ID "${id}" foi inativado com sucesso.` };
   }
 }

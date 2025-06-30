@@ -9,7 +9,7 @@ import {
 export class CriarProdutoDto {
   @IsString()
   @IsNotEmpty()
-  model: string; // <-- Usamos 'model' aqui, como você queria.
+  model: string; 
 
   @IsString()
   @IsNotEmpty()
