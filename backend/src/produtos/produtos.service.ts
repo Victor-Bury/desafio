@@ -16,9 +16,7 @@ export class ProdutosService {
     return this.produtoModelo.create(criarProdutoDto);
   }
 
-  async buscarTodos(
-    filtroDto: ObterProdutosFiltroDto,
-  ): Promise<Produto[]> {
+  async buscarTodos(filtroDto: ObterProdutosFiltroDto): Promise<Produto[]> {
     const { brand, type, pagina = 1, limite = 10 } = filtroDto;
     const query: any = { active: true };
 

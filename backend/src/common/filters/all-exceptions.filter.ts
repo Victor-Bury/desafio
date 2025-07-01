@@ -26,8 +26,8 @@ export class AllExceptionsFilter implements ExceptionFilter {
       typeof responsePayload === 'object' && responsePayload !== null
         ? (responsePayload as any).message || 'Erro interno do servidor'
         : typeof responsePayload === 'string'
-        ? responsePayload
-        : 'Erro interno do servidor';
+          ? responsePayload
+          : 'Erro interno do servidor';
 
     response.status(status).json({
       codigoStatus: status,

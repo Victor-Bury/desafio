@@ -17,7 +17,9 @@ export class AutenticacaoService {
     private jwtService: JwtService,
   ) {}
 
-  async registrar(credenciaisAuthDto: CredenciaisAutenticacaoDto): Promise<void> {
+  async registrar(
+    credenciaisAuthDto: CredenciaisAutenticacaoDto,
+  ): Promise<void> {
     const { nomeUsuario, senha } = credenciaisAuthDto;
     const salt = await bcrypt.genSalt();
     const senhaCriptografada = await bcrypt.hash(senha, salt);

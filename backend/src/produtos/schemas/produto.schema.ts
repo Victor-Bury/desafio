@@ -4,7 +4,7 @@ import { Document } from 'mongoose';
 @Schema({ timestamps: true })
 export class Produto extends Document {
   @Prop({ type: String, required: true, alias: 'model' }) // mongoose conflita com a palavra 'model'
-  model1: string; 
+  model1: string;
 
   @Prop({ required: true })
   brand: string;
