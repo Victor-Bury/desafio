@@ -5,14 +5,11 @@ services:
     build:
       context: ./frontend
       dockerfile: Dockerfile
-    ports:
-      - "5173:5173"
     volumes:
       - ./frontend:/app
       - /app/node_modules
     command: npm run dev -- --host 0.0.0.0
-    networks:
-      - haytek-net
+    network_mode: host
     depends_on:
       - backend
 
@@ -20,15 +17,14 @@ services:
     build:
       context: ./backend
       dockerfile: Dockerfile
-    ports:
-      - "3000:3000"
     volumes:
       - ./backend:/usr/src/app
       - /usr/src/app/node_modules
     command: npm run start
-    networks:
-      - haytek-net
-
-networks:
-  haytek-net:
-    driver: bridge
+    network_mode: host
+    
+  mongo:
+    image: mongo
+    volumes:
+      - ./data:/data/db
+    network_mode: host
