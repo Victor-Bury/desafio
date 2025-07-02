@@ -1,12 +1,16 @@
-import './App.css'
+import './App.css';
+import ListaProduto from './components/ListaProduto';
+import Login from './components/Login';
+import { useAuth } from './context/AutenticacaoContext';
 
 function App() {
+  const { estaAutenticado } = useAuth(); 
+
   return (
-    <div className="flex justify-center items-center h-screen">
-      <h1 className="text-3xl font-bold text-blue-600">
-        Hello world!
-      </h1>
+    <div>
+      {estaAutenticado ? <ListaProduto /> : <Login />}
     </div>
-  )
+  );
 }
-export default App
+
+export default App;
