@@ -19,6 +19,7 @@ services:
       dockerfile: Dockerfile
     volumes:
       - ./backend:/usr/src/app
+      - ./backend/.env.example:/usr/src/app/.env
       - /usr/src/app/node_modules
     command: npm run start
     network_mode: host
