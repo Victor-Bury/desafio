@@ -13,22 +13,37 @@ export class ProdutosService {
   ) {}
 
   async criar(criarProdutoDto: CriarProdutoDto): Promise<Produto> {
-    return this.produtoModelo.create(criarProdutoDto);
+    // Renomeia 'model' para 'model1' para corresponder ao schema
+    const produtoParaCriar = {
+      ...criarProdutoDto,
+      model1: criarProdutoDto.model,
+    };
+    delete (produtoParaCriar as any).model;
+
+    return this.produtoModelo.create(produtoParaCriar);
   }
 
   async buscarTodos(filtroDto: ObterProdutosFiltroDto): Promise<Produto[]> {
-    const { brand, type, pagina = 1, limite = 10 } = filtroDto;
+    const { busca, type, pagina = 1, limite = 10, sortBy = 'createdAt', order = 'desc' } = filtroDto;
     const query: any = { active: true };
 
-    if (brand) {
-      query.brand = { $regex: brand, $options: 'i' };
+
+    if (busca) {
+      query.$or = [
+        { brand: { $regex: busca, $options: 'i' } },
+        { model1: { $regex: busca, $options: 'i' } },
+      ];
     }
+    
     if (type) {
       query.type = { $regex: type, $options: 'i' };
     }
 
     const skip = (pagina - 1) * limite;
-    return this.produtoModelo.find(query).skip(skip).limit(limite).exec();
+ 
+    const sortOptions: Record<string, 1 | -1> = { [sortBy]: order === 'asc' ? 1 : -1 };
+
+    return this.produtoModelo.find(query).sort(sortOptions).skip(skip).limit(limite).exec();
   }
 
   async buscarPorId(id: string): Promise<Produto> {
@@ -48,8 +63,14 @@ export class ProdutosService {
     id: string,
     atualizarProdutoDto: AtualizarProdutoDto,
   ): Promise<Produto> {
+    const dadosParaAtualizar: any = { ...atualizarProdutoDto };
+    if (atualizarProdutoDto.model) {
+      dadosParaAtualizar.model1 = atualizarProdutoDto.model;
+      delete dadosParaAtualizar.model;
+    }
+
     const produtoExistente = await this.produtoModelo
-      .findByIdAndUpdate(id, atualizarProdutoDto, { new: true })
+      .findByIdAndUpdate(id, dadosParaAtualizar, { new: true })
       .exec();
 
     if (!produtoExistente) {

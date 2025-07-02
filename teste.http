@@ -1,0 +1,56 @@
+### registrar 
+
+#POST http://localhost:3000/autenticacao/registrar HTTP/1.1
+###User-Agent: rest-client
+###Content-Type: application/json
+###< ./usuario.json
+
+### registrar com corpo
+
+
+POST http://localhost:3000/autenticacao/registrar HTTP/1.1
+User-Agent: rest-client
+Content-Type: application/json
+
+{"nomeUsuario":"teste1","senha":"senha123"}
+
+### autenticar
+POST http://localhost:3000/autenticacao/entrar HTTP/1.1
+User-Agent: rest-client
+Content-Type: application/json
+
+{"nomeUsuario":"teste1","senha":"senha123"}
+
+
+### listar produtos
+
+
+
+GET http://localhost:3000/produtos HTTP/1.1
+User-Agent: rest-client
+Accept: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4NjU5MGMyYzllMjhlZTg5MDM1N2FmMiIsImlhdCI6MTc1MTQ4NjcyMiwiZXhwIjoxNzUxNDkwMzIyfQ.xMFpffCY9VbfRDxZoCGc49wFQO7aTGF3j8xBzfd4KgA
+
+### criar produto
+POST http://localhost:3000/produtos HTTP/1.1
+User-Agent: rest-client
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4NjU5MGMyYzllMjhlZTg5MDM1N2FmMiIsImlhdCI6MTc1MTQ4NjcyMiwiZXhwIjoxNzUxNDkwMzIyfQ.xMFpffCY9VbfRDxZoCGc49wFQO7aTGF3j8xBzfd4KgA
+
+{"model": "Nikon NIKKOR Z 24-70mm f/2.8 S","brand": "Nikon","type": "Zoom","focalLength": "24-70mm","maxAperture": "f/2.8","mount": "Nikon Z Mount","weight": 805,"hasStabilization": true,"active": true}
+
+
+### atualizar produto
+PUT http://localhost:3000/produtos/686591b7c9e28ee890357af8 HTTP/1.1
+User-Agent: rest-client
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4NjU5MGMyYzllMjhlZTg5MDM1N2FmMiIsImlhdCI6MTc1MTQ4NjcyMiwiZXhwIjoxNzUxNDkwMzIyfQ.xMFpffCY9VbfRDxZoCGc49wFQO7aTGF3j8xBzfd4KgA
+
+{"model": "Nikon NIKKOR Z 24-70mm f/2.8 S","brand": "Nikon","type": "Zoom","focalLength": "24-70mm","maxAperture": "f/2.8","mount": "Nikon Z Mount","weight": 905,"hasStabilization": true,"active": true}
+
+
+### deletar produto
+DELETE http://localhost:3000/produtos/686591b7c9e28ee890357af8 HTTP/1.1
+User-Agent: rest-client
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4NjU5MGMyYzllMjhlZTg5MDM1N2FmMiIsImlhdCI6MTc1MTQ4NjcyMiwiZXhwIjoxNzUxNDkwMzIyfQ.xMFpffCY9VbfRDxZoCGc49wFQO7aTGF3j8xBzfd4KgA

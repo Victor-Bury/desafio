@@ -1,11 +1,10 @@
-import { IsOptional, IsString, IsNumber, Min } from 'class-validator';
+import { IsOptional, IsString, IsNumber, Min, IsIn } from 'class-validator';
 import { Type } from 'class-transformer';
 
 export class ObterProdutosFiltroDto {
   @IsOptional()
   @IsString()
-  brand?: string;
-
+  busca?: string; 
   @IsOptional()
   @IsString()
   type?: string;
@@ -20,4 +19,11 @@ export class ObterProdutosFiltroDto {
   @Type(() => Number)
   @Min(1)
   limite?: number;
+
+  @IsOptional()
+  @IsString()
+  sortBy?: string; 
+  @IsOptional()
+  @IsIn(['asc', 'desc']) 
+  order?: 'asc' | 'desc';
 }

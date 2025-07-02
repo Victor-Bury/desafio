@@ -1,11 +1,12 @@
 import { createContext, useState, useContext, useEffect} from 'react';
-import type { ReactNode } from 'react';
 import api from '../services/api';
+import { toast } from 'react-hot-toast';
+import type { ReactNode } from 'react';
 
-// Define os tipos para o nosso contexto
 interface AutenticacaoContextType {
   token: string | null;
   entrar: (nomeUsuario: string, senha: string) => Promise<void>;
+  registrar: (nomeUsuario: string, senha: string) => Promise<void>; 
   sair: () => void;
   estaAutenticado: boolean;
 }
@@ -15,7 +16,6 @@ const AutenticacaoContext = createContext<AutenticacaoContextType | undefined>(u
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [token, setToken] = useState<string | null>(() => localStorage.getItem('token'));
 
-  // Efeito que roda sempre que o token mudar
   useEffect(() => {
     if (token) {
       api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
@@ -26,31 +26,23 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     }
   }, [token]);
 
-  //* Função para entrar no sistema que vai ser desabilitada para testes
- //const entrar = async (nomeUsuario: string, senha: string) => {
-  //  const resposta = await api.post('/autenticacao/entrar', { nomeUsuario, senha });
-   // const { tokenAcesso } = resposta.data;
-    //setToken(tokenAcesso);
- // };// 
- const entrar = async (nomeUsuario: string, senha: string) => {
-  console.log("--- MODO DE DESENVOLVIMENTO: Login simulado com sucesso! ---");
-
-  // 1. A linha que chama a API foi comentada
-  // const resposta = await api.post('/autenticacao/entrar', { nomeUsuario, senha });
-
-  // 2. Definimos um token falso para simular o login
-  const tokenAcesso = 'token-falso-para-desenvolvimento';
-
-  setToken(tokenAcesso);
+  const entrar = async (nomeUsuario: string, senha: string) => {
+    const resposta = await api.post('/autenticacao/entrar', { nomeUsuario, senha });
+    const { tokenAcesso } = resposta.data;
+    setToken(tokenAcesso);
 };
-// depois excluir token falso para desenvolvimento
+
+const registrar = async (nomeUsuario: string, senha: string) => {
+  await api.post('/autenticacao/registrar', { nomeUsuario, senha });
+  toast.success('Usuário registrado com sucesso! Agora você pode entrar.');
+};
   
   const sair = () => {
     setToken(null);
   };
 
   return (
-    <AutenticacaoContext.Provider value={{ token, entrar, sair, estaAutenticado: !!token }}>
+    <AutenticacaoContext.Provider value={{ token, entrar, registrar, sair, estaAutenticado: !!token }}>
       {children}
     </AutenticacaoContext.Provider>
   );
