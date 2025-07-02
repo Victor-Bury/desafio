@@ -28,7 +28,7 @@ const Login = () => {
       }
       try {
         await registrar(nomeUsuario, senha);
-        setIsRegistering(false);
+        setIsRegistering(false); 
         setNomeUsuario('');
         setSenha('');
         setConfirmarSenha('');
@@ -52,9 +52,8 @@ const Login = () => {
 
   return (
     <div className="container-login">
-      <div className="flex flex-col items-center justify-center p-8 border rounded-lg shadow-xl bg-white w-full max-w-sm">
-        
-        <h1 className="titulo-login text-3xl font-bold mb-6">
+      <div className="flex flex-col items-center justify-center p-8 border rounded-lg shadow-xl bg-white w-full max-w-sm min-h-[480px]">
+        <h1 className="titulo-login text-3xl font-bold mb-6 text-nowrap">
           {isRegistering ? 'Criar Conta' : 'Acessar Catálogo'}
         </h1>
 
@@ -86,7 +85,7 @@ const Login = () => {
               />
             )}
             {erro && <p className="text-red-500 text-sm">{erro}</p>}
-            <button type="submit" disabled={carregando} className="bg-blue-600 text-white p-2 rounded hover:bg-blue-700 disabled:bg-blue-400">
+            <button type="submit" disabled={carregando} className="bg-blue-600 text-black p-2 rounded hover:bg-blue-700 disabled:bg-blue-400">
                 {carregando ? 'Aguarde...' : (isRegistering ? 'Registrar' : 'Entrar')}
             </button>
         </form>
@@ -97,7 +96,7 @@ const Login = () => {
               setIsRegistering(!isRegistering);
               setErro(null);
             }} 
-            className="text-sm text-blue-600 hover:underline bg-transparent border-none p-0"
+            className="text-sm text-black hover:underline bg-transparent border-none p-0"
           >
             {isRegistering ? 'Já tem uma conta? Entrar' : 'Não tem uma conta? Registre-se'}
           </button>

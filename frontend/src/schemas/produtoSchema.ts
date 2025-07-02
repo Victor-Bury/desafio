@@ -7,10 +7,12 @@ export const produtoSchema = z.object({
   focalLength: z.string().optional(),
   maxAperture: z.string().optional(),
   mount: z.string().optional(),
-  weight: z
-    .preprocess((val) => (val === '' ? undefined : Number(val)), z.number().int().positive().optional()),
-  hasStabilization: z.coerce.boolean().optional(),
-  active: z.coerce.boolean().optional(),
+  weight: z.number()
+    .int({ message: 'Peso deve ser um número inteiro.' })
+    .positive({ message: 'Peso deve ser positivo.' })
+    .optional(),
+  hasStabilization: z.boolean().optional(),
+  active: z.boolean().optional(),
 });
 
 export type ProdutoForm = z.infer<typeof produtoSchema>;

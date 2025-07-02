@@ -23,7 +23,7 @@ services:
     network_mode: host
     
   mongo:
-    image: mongo
+    image: mongo:4.4
     volumes:
       - ./data:/data/db
     network_mode: host
