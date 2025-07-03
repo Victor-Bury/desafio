@@ -5,6 +5,10 @@ import { Produto } from './schemas/produto.schema';
 import { CriarProdutoDto } from './dto/criar-produto.dto';
 import { AtualizarProdutoDto } from './dto/atualizar-produto.dto';
 import { ObterProdutosFiltroDto } from './dto/obter-produtos-filtro.dto';
+interface PaginatedProducts {
+  produtos: Produto[];
+  totalPaginas: number;
+}
 
 @Injectable()
 export class ProdutosService {
@@ -15,9 +19,8 @@ export class ProdutosService {
   async criar(criarProdutoDto: CriarProdutoDto): Promise<Produto> {
     return this.produtoModelo.create(criarProdutoDto);
   }
-
-  async buscarTodos(filtroDto: ObterProdutosFiltroDto): Promise<Produto[]> {
-    const { busca, type, pagina = 1, limite = 10, sortBy = 'createdAt', order = 'desc' } = filtroDto;
+  async buscarTodos(filtroDto: ObterProdutosFiltroDto): Promise<PaginatedProducts> {
+    const { busca, type, pagina = 1, limite = 6, sortBy = 'createdAt', order = 'desc' } = filtroDto;
     const query: any = { active: true };
 
     if (busca) {
@@ -32,10 +35,15 @@ export class ProdutosService {
     }
 
     const skip = (pagina - 1) * limite;
- 
     const sortOptions: Record<string, 1 | -1> = { [sortBy]: order === 'asc' ? 1 : -1 };
+    const [produtos, total] = await Promise.all([
+      this.produtoModelo.find(query).sort(sortOptions).skip(skip).limit(limite).exec(),
+      this.produtoModelo.countDocuments(query),
+    ]);
 
-    return this.produtoModelo.find(query).sort(sortOptions).skip(skip).limit(limite).exec();
+    const totalPaginas = Math.ceil(total / limite);
+
+    return { produtos, totalPaginas };
   }
 
   async buscarPorId(id: string): Promise<Produto> {
@@ -44,9 +52,7 @@ export class ProdutosService {
       .exec();
 
     if (!produto) {
-      throw new NotFoundException(
-        `Produto com ID "${id}" não encontrado ou inativo.`,
-      );
+      throw new NotFoundException(`Produto com ID "${id}" não encontrado ou inativo.`);
     }
     return produto;
   }

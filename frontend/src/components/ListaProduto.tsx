@@ -57,12 +57,8 @@ const ListaProduto = () => {
 
   return (
     <div className="container mx-auto p-4">
-      {/* Cabeçalho com título e botões */}
       <div className="mb-4">
-        {/* Título */}
         <h1 className="text-2xl font-bold text-gray-800 mb-4">Catálogo de Produtos</h1>
-        
-        {/* Contêiner dos Botões alinhado ao centro */}
         <div className="flex justify-center gap-4">
           <button onClick={() => setMostrarFormularioAdicionar(true)} className="bg-green-600 text-black p-2 rounded hover:bg-green-700">
             Adicionar Produto
@@ -73,7 +69,6 @@ const ListaProduto = () => {
         </div>
       </div>
 
-      {/* Filtros */}
       <div className="flex flex-col md:flex-row gap-4 mb-6">
         <input
           type="text"
@@ -91,7 +86,7 @@ const ListaProduto = () => {
             setPagina(1);
             setFiltroTipo(e.target.value);
           }}
-          className="border p-2 rounded w-full md:w-[28%]"
+          className="border p-2 rounded w-full md:w-[30%]"
         >
           <option value="">Todos os tipos</option>
           <option value="Prime">Prime</option>
@@ -101,7 +96,6 @@ const ListaProduto = () => {
         </select>
       </div>
 
-      {/* Lista de produtos */}
       {carregando ? (
         <div className="text-center text-gray-600">Carregando produtos...</div>
       ) : produtos.length === 0 ? (
@@ -128,7 +122,6 @@ const ListaProduto = () => {
         </div>
       )}
 
-      {/* Paginação */}
       {totalPaginas > 1 && (
         <div className="flex justify-center items-center gap-4 mt-6">
           <button
@@ -149,7 +142,6 @@ const ListaProduto = () => {
         </div>
       )}
 
-      {/* Modal para adicionar produto */}
       {mostrarFormularioAdicionar && (
         <AdicionarProduto
           onClose={() => setMostrarFormularioAdicionar(false)}
@@ -157,7 +149,6 @@ const ListaProduto = () => {
         />
       )}
 
-      {/* Modal para editar produto */}
       {produtoParaEditar && (
         <EditarProduto
           produto={produtoParaEditar}

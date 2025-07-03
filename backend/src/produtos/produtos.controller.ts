@@ -19,6 +19,11 @@ import { AtualizarProdutoDto } from './dto/atualizar-produto.dto';
 import { ObterProdutosFiltroDto } from './dto/obter-produtos-filtro.dto';
 import { Produto } from './schemas/produto.schema';
 
+interface PaginatedProductsResponse {
+  produtos: Produto[];
+  totalPaginas: number;
+}
+
 @Controller('produtos')
 export class ProdutosController {
   constructor(private readonly produtosService: ProdutosService) {}
@@ -32,7 +37,7 @@ export class ProdutosController {
   @Get()
   async buscarTodos(
     @Query() filtroDto: ObterProdutosFiltroDto,
-  ): Promise<Produto[]> {
+  ): Promise<PaginatedProductsResponse> {
     return this.produtosService.buscarTodos(filtroDto);
   }
 
