@@ -1,6 +1,6 @@
 export interface Produto {
   _id: string;
-  model1: string;
+  productModel: string;
   brand: string;
   type: string;
   focalLength?: string;

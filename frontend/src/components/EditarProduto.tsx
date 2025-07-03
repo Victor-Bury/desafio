@@ -3,7 +3,6 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import api from '../services/api';
 import { toast } from 'react-hot-toast';
-
 import type { Produto } from '../interfaces/Produto';
 import { produtoSchema, type ProdutoForm } from '../schemas/produtoSchema';
 
@@ -21,22 +20,11 @@ const EditarProduto = ({ produto, onClose, onProdutoAtualizado }: EditarProdutoP
     reset,
   } = useForm<ProdutoForm>({
     resolver: zodResolver(produtoSchema),
-    defaultValues: {
-      model: produto.model1,
-      brand: produto.brand,
-      type: produto.type,
-      focalLength: produto.focalLength || '',
-      maxAperture: produto.maxAperture || '',
-      mount: produto.mount || '',
-      weight: produto.weight || undefined,
-      hasStabilization: produto.hasStabilization || false,
-      active: produto.active !== undefined ? produto.active : true,
-    }
   });
 
   useEffect(() => {
     reset({
-      model: produto.model1,
+      productModel: produto.productModel,
       brand: produto.brand,
       type: produto.type,
       focalLength: produto.focalLength || '',
@@ -68,8 +56,8 @@ const EditarProduto = ({ produto, onClose, onProdutoAtualizado }: EditarProdutoP
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div>
-              <input {...register('model')} placeholder="Modelo" className="w-full p-2 border rounded text-black" />
-              {errors.model && <p className="text-red-500 text-sm mt-1">{errors.model.message}</p>}
+              <input {...register('productModel')} placeholder="Modelo" className="w-full p-2 border rounded text-black" />
+              {errors.productModel && <p className="text-red-500 text-sm mt-1">{errors.productModel.message}</p>}
             </div>
             <div>
               <input {...register('brand')} placeholder="Marca" className="w-full p-2 border rounded text-black" />
@@ -95,7 +83,12 @@ const EditarProduto = ({ produto, onClose, onProdutoAtualizado }: EditarProdutoP
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 items-center">
             <div>
-              <input type="number" {...register('weight')} placeholder="Peso (em gramas)" className="w-full p-2 border rounded text-black" />
+              <input 
+                type="number" 
+                {...register('weight', { valueAsNumber: true })} 
+                placeholder="Peso (em gramas)" 
+                className="w-full p-2 border rounded text-black" 
+              />
               {errors.weight && <p className="text-red-500 text-sm mt-1">{errors.weight.message}</p>}
             </div>
             <div className="flex items-center gap-2">

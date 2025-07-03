@@ -18,6 +18,13 @@ const AdicionarProduto = ({ onClose, onProdutoAdicionado }: AdicionarProdutoProp
   } = useForm<ProdutoForm>({ 
     resolver: zodResolver(produtoSchema),
     defaultValues: {
+      productModel: '',
+      brand: '',
+      type: '',
+      focalLength: '',
+      maxAperture: '',
+      mount: '',
+      weight: 0,
       hasStabilization: false,
       active: true,
     }
@@ -45,8 +52,8 @@ const AdicionarProduto = ({ onClose, onProdutoAdicionado }: AdicionarProdutoProp
           {/* Dados Principais */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div>
-              <input {...register('model')} placeholder="Modelo" className="w-full p-2 border rounded text-black" />
-              {errors.model && <p className="text-red-500 text-sm mt-1">{errors.model.message}</p>}
+              <input {...register('productModel')} placeholder="Modelo" className="w-full p-2 border rounded text-black" />
+              {errors.productModel && <p className="text-red-500 text-sm mt-1">{errors.productModel.message}</p>}
             </div>
             <div>
               <input {...register('brand')} placeholder="Marca" className="w-full p-2 border rounded text-black" />
@@ -62,22 +69,24 @@ const AdicionarProduto = ({ onClose, onProdutoAdicionado }: AdicionarProdutoProp
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div>
               <input {...register('focalLength')} placeholder="Distância Focal (ex: 24-70mm)" className="w-full p-2 border rounded text-black" />
-              {errors.focalLength && <p className="text-red-500 text-sm mt-1">{errors.focalLength.message}</p>}
             </div>
             <div>
               <input {...register('maxAperture')} placeholder="Abertura Máxima (ex: f/2.8)" className="w-full p-2 border rounded text-black" />
-              {errors.maxAperture && <p className="text-red-500 text-sm mt-1">{errors.maxAperture.message}</p>}
             </div>
             <div>
               <input {...register('mount')} placeholder="Encaixe (ex: Nikon Z)" className="w-full p-2 border rounded text-black" />
-              {errors.mount && <p className="text-red-500 text-sm mt-1">{errors.mount.message}</p>}
             </div>
           </div>
           
           {/* Detalhes Físicos e Status */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 items-center">
             <div>
-              <input type="number" {...register('weight')} placeholder="Peso (em gramas)" className="w-full p-2 border rounded text-black" />
+              <input 
+                type="number" 
+                {...register('weight')} 
+                placeholder="Peso (em gramas)" 
+                className="w-full p-2 border rounded text-black" 
+              />
               {errors.weight && <p className="text-red-500 text-sm mt-1">{errors.weight.message}</p>}
             </div>
             <div className="flex items-center gap-2">

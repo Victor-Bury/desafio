@@ -8,8 +8,8 @@ import {
 
 export class CriarProdutoDto {
   @IsString()
-  @IsNotEmpty()
-  model: string;
+@IsNotEmpty()
+productModel: string;
 
   @IsString()
   @IsNotEmpty()
