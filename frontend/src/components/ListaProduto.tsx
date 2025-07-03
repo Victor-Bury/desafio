@@ -120,7 +120,7 @@ const ListaProduto = () => {
                 <p className="mt-2 text-gray-700">{produto.type}</p>
               </div>
               <div className="flex justify-end gap-2 mt-4">
-                <button onClick={() => setProdutoParaVer(produto)} className="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600 text-sm">
+                <button onClick={() => setProdutoParaVer(produto)} className="bg-blue-500 text-black px-3 py-1 rounded hover:bg-blue-600 text-sm">
                   Ver mais
                 </button>
                 <button onClick={() => setProdutoParaEditar(produto)} className="bg-yellow-500 text-black px-3 py-1 rounded hover:bg-yellow-600 text-sm">
