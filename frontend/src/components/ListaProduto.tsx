@@ -23,16 +23,17 @@ const ListaProduto = () => {
     try {
       const params = {
         busca,
-        tipo: filtroTipo,
-        page: pagina,
-        limit: 6,
+        type: filtroTipo,
+        pagina: pagina, 
+        limite: 6,      
       };
       const resposta = await api.get('/produtos', { params });
+      
       setProdutos(resposta.data.produtos || []);
       setTotalPaginas(resposta.data.totalPaginas || 1);
     } catch (erro) {
       console.error("Erro ao buscar produtos:", erro);
-      toast.error("Erro ao buscar produtos.");
+      toast.error("Erro ao buscar produtos. Verifique o console do backend para mais detalhes.");
     } finally {
       setCarregando(false);
     }
@@ -47,7 +48,11 @@ const ListaProduto = () => {
       try {
         await api.delete(`/produtos/${id}`);
         toast.success("Produto excluído com sucesso!");
-        buscarProdutos();
+        if (produtos.length === 1 && pagina > 1) {
+          setPagina(pagina - 1);
+        } else {
+          buscarProdutos();
+        }
       } catch (erro) {
         console.error("Erro ao excluir produto:", erro);
         toast.error("Não foi possível excluir o produto.");
@@ -126,7 +131,7 @@ const ListaProduto = () => {
         <div className="flex justify-center items-center gap-4 mt-6">
           <button
             onClick={() => setPagina((prev) => Math.max(prev - 1, 1))}
-            disabled={pagina === 1}
+            disabled={pagina === 1 || carregando}
             className="px-4 py-2 bg-gray-300 rounded disabled:opacity-50"
           >
             Anterior
@@ -134,7 +139,7 @@ const ListaProduto = () => {
           <span className="px-4 py-2 text-gray-700">Página {pagina} de {totalPaginas}</span>
           <button
             onClick={() => setPagina((prev) => Math.min(prev + 1, totalPaginas))}
-            disabled={pagina === totalPaginas}
+            disabled={pagina === totalPaginas || carregando}
             className="px-4 py-2 bg-gray-300 rounded disabled:opacity-50"
           >
             Próxima
@@ -145,7 +150,13 @@ const ListaProduto = () => {
       {mostrarFormularioAdicionar && (
         <AdicionarProduto
           onClose={() => setMostrarFormularioAdicionar(false)}
-          onProdutoAdicionado={buscarProdutos}
+          onProdutoAdicionado={() => {
+            if (pagina !== 1) {
+              setPagina(1);
+            } else {
+              buscarProdutos();
+            }
+          }}
         />
       )}
 
