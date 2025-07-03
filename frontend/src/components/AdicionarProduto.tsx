@@ -24,7 +24,7 @@ const AdicionarProduto = ({ onClose, onProdutoAdicionado }: AdicionarProdutoProp
       focalLength: '',
       maxAperture: '',
       mount: '',
-      weight: 0,
+      weight: undefined,
       hasStabilization: false,
       active: true,
     }
@@ -49,7 +49,6 @@ const AdicionarProduto = ({ onClose, onProdutoAdicionado }: AdicionarProdutoProp
         <h2 className="text-xl font-bold mb-6 text-black">Adicionar Novo Produto</h2>
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
           
-          {/* Dados Principais */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div>
               <input {...register('productModel')} placeholder="Modelo" className="w-full p-2 border rounded text-black" />
@@ -65,7 +64,6 @@ const AdicionarProduto = ({ onClose, onProdutoAdicionado }: AdicionarProdutoProp
             </div>
           </div>
           
-          {/* Especificações Técnicas */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div>
               <input {...register('focalLength')} placeholder="Distância Focal (ex: 24-70mm)" className="w-full p-2 border rounded text-black" />
@@ -78,14 +76,13 @@ const AdicionarProduto = ({ onClose, onProdutoAdicionado }: AdicionarProdutoProp
             </div>
           </div>
           
-          {/* Detalhes Físicos e Status */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 items-center">
             <div>
-              <input 
-                type="number" 
-                {...register('weight')} 
-                placeholder="Peso (em gramas)" 
-                className="w-full p-2 border rounded text-black" 
+              <input
+                type="number"
+                {...register('weight', { valueAsNumber: true })}
+                placeholder="Peso (em gramas)"
+                className="w-full p-2 border rounded text-black"
               />
               {errors.weight && <p className="text-red-500 text-sm mt-1">{errors.weight.message}</p>}
             </div>

@@ -52,7 +52,7 @@ const Login = () => {
 
   return (
     <div className="container-login">
-      <div className="flex flex-col items-center justify-center p-8 border rounded-lg shadow-xl bg-white w-full max-w-sm min-h-[480px]">
+      <div className="flex flex-col items-center justify-center p-8 border rounded-lg shadow-xl bg-white w-full max-w-md min-h-[480px]">
         <h1 className="titulo-login text-3xl font-bold mb-6 text-nowrap">
           {isRegistering ? 'Criar Conta' : 'Acessar Catálogo'}
         </h1>

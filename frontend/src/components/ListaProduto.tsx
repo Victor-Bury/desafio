@@ -57,9 +57,13 @@ const ListaProduto = () => {
 
   return (
     <div className="container mx-auto p-4">
-      <div className="flex justify-between items-center mb-4">
-        <h1 className="text-2xl font-bold text-gray-800">Catálogo de Produtos</h1>
-        <div className="flex gap-4">
+      {/* Cabeçalho com título e botões */}
+      <div className="mb-4">
+        {/* Título */}
+        <h1 className="text-2xl font-bold text-gray-800 mb-4">Catálogo de Produtos</h1>
+        
+        {/* Contêiner dos Botões alinhado ao centro */}
+        <div className="flex justify-center gap-4">
           <button onClick={() => setMostrarFormularioAdicionar(true)} className="bg-green-600 text-black p-2 rounded hover:bg-green-700">
             Adicionar Produto
           </button>
@@ -87,11 +91,13 @@ const ListaProduto = () => {
             setPagina(1);
             setFiltroTipo(e.target.value);
           }}
-          className="border p-2 rounded w-full md:w-1/4"
+          className="border p-2 rounded w-full md:w-[28%]"
         >
           <option value="">Todos os tipos</option>
-          <option value="Lente">Lente</option>
-          <option value="Câmera">Câmera</option>
+          <option value="Prime">Prime</option>
+          <option value="Zoom">Zoom</option>
+          <option value="Macro">Macro</option>
+          <option value="Tilt-Shift">Tilt-Shift</option>
         </select>
       </div>
 
@@ -105,7 +111,7 @@ const ListaProduto = () => {
           {produtos.map((produto) => (
             <div key={produto._id} className="border rounded-lg p-4 shadow-lg bg-white flex flex-col justify-between">
               <div>
-                <h2 className="text-xl font-semibold text-gray-900">{produto.model1}</h2>
+                <h2 className="text-xl font-semibold text-gray-900">{produto.productModel}</h2>
                 <p className="text-gray-600">{produto.brand}</p>
                 <p className="mt-2 text-gray-700">{produto.type}</p>
               </div>

@@ -4,7 +4,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import api from '../services/api';
 import { toast } from 'react-hot-toast';
 import type { Produto } from '../interfaces/Produto';
-import { produtoSchema, type ProdutoForm } from '../schemas/produtoSchema';
+import { produtoSchema, type ProdutoFormInput, type ProdutoFormOutput } from '../schemas/produtoSchema';
 
 interface EditarProdutoProps {
   produto: Produto; 
@@ -18,7 +18,7 @@ const EditarProduto = ({ produto, onClose, onProdutoAtualizado }: EditarProdutoP
     handleSubmit,
     formState: { errors, isSubmitting },
     reset,
-  } = useForm<ProdutoForm>({
+  } = useForm<ProdutoFormInput>({ 
     resolver: zodResolver(produtoSchema),
   });
 
@@ -30,13 +30,13 @@ const EditarProduto = ({ produto, onClose, onProdutoAtualizado }: EditarProdutoP
       focalLength: produto.focalLength || '',
       maxAperture: produto.maxAperture || '',
       mount: produto.mount || '',
-      weight: produto.weight || undefined,
+      weight: produto.weight ?? 0, 
       hasStabilization: produto.hasStabilization || false,
       active: produto.active !== undefined ? produto.active : true,
     });
   }, [produto, reset]);
 
-  const onSubmit = async (data: ProdutoForm) => {
+  const onSubmit = async (data: ProdutoFormOutput) => { 
     try {
       await api.put(`/produtos/${produto._id}`, data);
       toast.success('Produto atualizado com sucesso!');
@@ -85,7 +85,7 @@ const EditarProduto = ({ produto, onClose, onProdutoAtualizado }: EditarProdutoP
             <div>
               <input 
                 type="number" 
-                {...register('weight', { valueAsNumber: true })} 
+                {...register('weight')} 
                 placeholder="Peso (em gramas)" 
                 className="w-full p-2 border rounded text-black" 
               />
