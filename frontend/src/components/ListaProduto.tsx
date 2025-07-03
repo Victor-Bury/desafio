@@ -4,12 +4,14 @@ import api from '../services/api';
 import { useAuth } from '../context/AutenticacaoContext';
 import AdicionarProduto from './AdicionarProduto';
 import EditarProduto from './EditarProduto';
+import DetalhesProduto from './DetalhesProduto';
 import { toast } from 'react-hot-toast';
 
 const ListaProduto = () => {
   const [produtos, setProdutos] = useState<Produto[]>([]);
   const [mostrarFormularioAdicionar, setMostrarFormularioAdicionar] = useState(false);
   const [produtoParaEditar, setProdutoParaEditar] = useState<Produto | null>(null);
+  const [produtoParaVer, setProdutoParaVer] = useState<Produto | null>(null); 
   const [busca, setBusca] = useState('');
   const [filtroTipo, setFiltroTipo] = useState('');
   const [pagina, setPagina] = useState(1);
@@ -24,8 +26,8 @@ const ListaProduto = () => {
       const params = {
         busca,
         type: filtroTipo,
-        pagina: pagina, 
-        limite: 6,      
+        pagina: pagina,
+        limite: 6,
       };
       const resposta = await api.get('/produtos', { params });
       
@@ -33,7 +35,7 @@ const ListaProduto = () => {
       setTotalPaginas(resposta.data.totalPaginas || 1);
     } catch (erro) {
       console.error("Erro ao buscar produtos:", erro);
-      toast.error("Erro ao buscar produtos. Verifique o console do backend para mais detalhes.");
+      toast.error("Erro ao buscar produtos.");
     } finally {
       setCarregando(false);
     }
@@ -62,6 +64,7 @@ const ListaProduto = () => {
 
   return (
     <div className="container mx-auto p-4">
+      {/* Cabeçalho */}
       <div className="mb-4">
         <h1 className="text-2xl font-bold text-gray-800 mb-4">Catálogo de Produtos</h1>
         <div className="flex justify-center gap-4">
@@ -74,6 +77,7 @@ const ListaProduto = () => {
         </div>
       </div>
 
+      {/* Filtros */}
       <div className="flex flex-col md:flex-row gap-4 mb-6">
         <input
           type="text"
@@ -101,6 +105,7 @@ const ListaProduto = () => {
         </select>
       </div>
 
+      {/* Lista de Produtos */}
       {carregando ? (
         <div className="text-center text-gray-600">Carregando produtos...</div>
       ) : produtos.length === 0 ? (
@@ -115,6 +120,9 @@ const ListaProduto = () => {
                 <p className="mt-2 text-gray-700">{produto.type}</p>
               </div>
               <div className="flex justify-end gap-2 mt-4">
+                <button onClick={() => setProdutoParaVer(produto)} className="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600 text-sm">
+                  Ver mais
+                </button>
                 <button onClick={() => setProdutoParaEditar(produto)} className="bg-yellow-500 text-black px-3 py-1 rounded hover:bg-yellow-600 text-sm">
                   Editar
                 </button>
@@ -127,6 +135,7 @@ const ListaProduto = () => {
         </div>
       )}
 
+      {/* Paginação */}
       {totalPaginas > 1 && (
         <div className="flex justify-center items-center gap-4 mt-6">
           <button
@@ -145,6 +154,14 @@ const ListaProduto = () => {
             Próxima
           </button>
         </div>
+      )}
+
+      {/* Modais */}
+      {produtoParaVer && (
+        <DetalhesProduto
+          produto={produtoParaVer}
+          onClose={() => setProdutoParaVer(null)}
+        />
       )}
 
       {mostrarFormularioAdicionar && (
